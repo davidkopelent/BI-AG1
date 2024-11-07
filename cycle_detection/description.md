@@ -6,8 +6,8 @@ has_cycle(graf G):\
 (2)     Stav[u] := nenalezený\
 (3)\
 (4) Pro každý vrchol u z V(G):\
-(5)     \tPokud stav[u] = nenalezený && cyclic_util(G, u):\
-(6)         \t vrať true\
+(5)     Pokud stav[u] = nenalezený && cyclic_util(G, u):\
+(6)         vrať true\
 (7) vrať false\
 \
 cyclic_util(vrchol u):\
