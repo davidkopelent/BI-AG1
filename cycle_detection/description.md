@@ -1,6 +1,6 @@
 # Detekce cyklů v orientovaném grafu
 
-**Pseudokód**
+**Pseudokód**\
 has_cycle(graf G):\
 (1) Pro každý vrchol u z V(G):\
 (2)     Stav[u] := nenalezený\
