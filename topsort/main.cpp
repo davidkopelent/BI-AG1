@@ -149,40 +149,36 @@ std::ostream &operator<<(std::ostream &out, const Graph &G)
 
 #endif
 
-std::vector<Vertex> findCycle(Vertex start, const Graph &G) {
-    std::vector<bool> visited(G.vertices(), false);
-    std::vector<bool> inRecStack(G.vertices(), false);
-    std::vector<Vertex> cycle;
+enum State {
+    UNVISITED,
+    VISITING,
+    VISITED
+};
 
-    std::function<bool(Vertex)> dfs = [&](Vertex v) {
-        visited[v] = true;
-        inRecStack[v] = true;
+// Helper function to perform DFS and find a cycle
+bool dfsCycle(const Graph &G, Vertex v, std::vector<State> &states, std::vector<Vertex> &path, std::vector<Vertex> &cycle) {
+    states[v] = VISITING;
+    path.push_back(v);
 
-        for (Vertex w : G[v]) {
-            if (!visited[w]) {
-                if (dfs(w)) return true; // Recur if not visited
-            } else if (inRecStack[w]) { // Found a back edge
-                // Store the cycle
-                cycle.push_back(w); // Start of the cycle
+    for (Vertex neighbor : G[v]) {
+        if (states[neighbor] == UNVISITED) {
+            if (dfsCycle(G, neighbor, states, path, cycle)) {
                 return true;
             }
-        }
-        
-        inRecStack[v] = false; // Remove from recursion stack
-        return false;
-    };
-
-    for (Vertex v : G) {
-        if (!visited[v]) {
-            if (dfs(v)) {
-                // We found a cycle, now backtrack to get the full cycle
-                cycle.push_back(start);
-                return cycle;
+        } else if (states[neighbor] == VISITING) {
+            // Found a cycle
+            auto it = std::find(path.begin(), path.end(), neighbor);
+            if (it != path.end()) {
+                cycle.assign(it, path.end());
+                cycle.push_back(neighbor); // Close the cycle
             }
+            return true;
         }
     }
-    
-    return {}; // No cycle found
+
+    path.pop_back();
+    states[v] = VISITED;
+    return false;
 }
 
 // Returns either true and a topological order or false and a cycle
@@ -219,20 +215,18 @@ std::pair<bool, std::vector<Vertex>> topsort(const Graph &G) {
         }
     }
 
-    // Check if topological sort is possible
     if (sorted.size() != G.vertices()) {
-        // Find a cycle
-        Vertex cycle_start = NO_VERTEX;
-        for (size_t i = 0; i < degrees.size(); i++) {
-            if (degrees[i] != 0) {
-                cycle_start = Vertex{i};
-                break;
-            }
-        }
-        std::vector<Vertex> cycle = findCycle(cycle_start, G);
-        // Reverse the cycle to start from the cycle_start
-        std::reverse(cycle.begin(), cycle.end());
-        return {false, cycle}; // Return cycle
+      // Cycle detection
+      std::vector<State> states(G.vertices(), UNVISITED);
+      std::vector<Vertex> path, cycle;
+
+      for (Vertex v : G) {
+          if (states[v] == UNVISITED) {
+              if (dfsCycle(G, v, states, path, cycle)) {
+                  return {false, cycle};
+              }
+          }
+      }
     }
 
     return {true, sorted}; // Return topological sort

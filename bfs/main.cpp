@@ -51,34 +51,12 @@ private:
 };
 
 template<typename T>
-void backtrack(const std::map<T, T> &P, const T &from, const T &to) {
-    std::stack<T> route;
-    T v = from;
-
-    while (true) {
-        route.push(v);
-        v = P.at(v);
-
-        if (v == to) {
-            route.push(v);
-            break;
-        }
-    }
-
-    while (!route.empty()) {
-        std::cout << route.top() << " -> ";
-        route.pop();
-    }
-
-    std::cout << "\n";
-}
-
-template<typename T>
 void bfs(const Graph<T> &G, T s) {
     std::set<T> visited = {s};
     std::map<T, T> P; 
     std::map<T, size_t> D = {{s, 0}}; 
     std::deque<T> Q = {s};
+    int outCount = 0;
 
     while (!Q.empty()) {
         T u = Q.front();
@@ -92,14 +70,6 @@ void bfs(const Graph<T> &G, T s) {
                 visited.insert(v);
             }
         }
-
-        if (Q.empty())
-            backtrack(P, u, s);
-    }
-
-    std::cout << "Distances from source " << s << ":\n";
-    for (const auto &[vertex, distance] : D) {
-        std::cout << "Vertex: " << vertex << ", Distance: " << distance << '\n';
     }
 }
 
