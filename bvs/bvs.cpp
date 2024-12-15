@@ -78,6 +78,28 @@ public:
         return max(node->right);
     }
 
+    // ToDo
+    void split(int s) const {
+        if (empty()) return;
+        std::shared_ptr<Node> left = nullptr;
+        std::shared_ptr<Node> right = nullptr;
+
+        if (s == root->val) {
+            left = root->left;
+            right = root->right;
+        } else if (s < root->val) {
+            right = root->right;
+        } else if (s > root->val) {
+            left = root->left;
+        }
+
+        std::cout << "Left tree: ";
+        if (left) show(left, max(left));
+        std::cout << "\nRight tree: ";
+        if (right) show(right, max(right));
+        std::cout << "\n";
+    }
+
 private:
     std::shared_ptr<Node> root;
 
@@ -146,6 +168,7 @@ int main(void) {
     assert(bvs.insert_node(6) == true);
     assert(bvs.insert_node(1) == true);
     bvs.print();
+    bvs.split(7);
 
     for (int i = 1; i < 8; i++)
         assert(bvs.find(i) == true);
@@ -153,5 +176,6 @@ int main(void) {
     assert(bvs.delete_node(1) == true);
     assert(bvs.delete_node(1) == false);
     bvs.print();
+
     return EXIT_SUCCESS;
 }

@@ -60,7 +60,7 @@ private:
 };
 
 template<typename T>
-bool has_cycle(const Graph<T> &G) {
+bool has_cycle_dfs(const Graph<T> &G) {
     std::unordered_map<T, State> states;
 
     for (const auto &v : G.graph())
@@ -96,7 +96,7 @@ bool dfs(const Graph<T> &G, std::unordered_map<T, State> &states, T v, T parent)
 }
 
 template<typename T>
-bool has_cycle_alt(const Graph<T> &G) {
+bool has_cycle_bfs(const Graph<T> &G) {
     std::unordered_map<T, State> states;
 
     for (const auto &v: G.graph())
@@ -146,8 +146,8 @@ int main() {
         {2, {3}},
         {3, {1}}  // Tento graf má cyklus 1 -> 2 -> 3 -> 1
     });
-    assert(has_cycle(g1) == true);
-    assert(has_cycle_alt(g1) == true);
+    assert(has_cycle_dfs(g1) == true);
+    assert(has_cycle_bfs(g1) == true);
 
     Graph<int> g2({
         {1, {2, 3, 5}},
@@ -156,8 +156,8 @@ int main() {
         {4, {1, 5}}, // Cyklus 1 -> 2 -> 4 -> 1
         {5, {}}
     });
-    assert(has_cycle(g2) == true);
-    assert(has_cycle_alt(g2) == true);
+    assert(has_cycle_dfs(g2) == true);
+    assert(has_cycle_bfs(g2) == true);
 
     Graph<int> g3({
         {1, {2, 3, 5}},
@@ -166,8 +166,8 @@ int main() {
         {4, {1, 5}}, // Tento graf má cyklus
         {5, {}}
     });
-    assert(has_cycle(g3) == true);
-    assert(has_cycle_alt(g3) == true);
+    assert(has_cycle_dfs(g3) == true);
+    assert(has_cycle_bfs(g3) == true);
 
     Graph<int> g4({
         {1, {2, 5}},
@@ -176,23 +176,23 @@ int main() {
         {4, {}},    // Tento graf má cyklus
         {5, {4}}
     });
-    assert(has_cycle(g4) == true);
-    assert(has_cycle_alt(g4) == true);
+    assert(has_cycle_dfs(g4) == true);
+    assert(has_cycle_bfs(g4) == true);
 
     Graph<int> g5({
         {1, {2, 3}},
         {2, {1}},   
         {3, {1}}   
     });
-    assert(has_cycle(g5) == false);
-    assert(has_cycle_alt(g5) == false);
+    assert(has_cycle_dfs(g5) == false);
+    assert(has_cycle_bfs(g5) == false);
 
     Graph<int> g6({
         {1, {2}},
         {2, {1}}     
     });
-    assert(has_cycle(g6) == false);
-    assert(has_cycle_alt(g6) == false);
+    assert(has_cycle_dfs(g6) == false);
+    assert(has_cycle_bfs(g6) == false);
 
     return EXIT_SUCCESS;
 }
