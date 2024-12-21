@@ -6,45 +6,41 @@
 #include <limits>
 #include <optional>
 #include <algorithm>
-#include <bitset>
-#include <list>
-#include <array>
-#include <vector>
-#include <deque>
-#include <unordered_set>
-#include <unordered_map>
-#include <set>
 #include <map>
-#include <stack>
-#include <queue>
 #include <random>
 #include <type_traits>
 #include <compare>
 
-int fibRec(int n) {
-    if (n <= 2) return 1;
-    return fibRec(n-1) + fibRec(n-2);
+std::map<int, int> vertices;
+
+int avlMinVertices(int h) {
+    if (vertices.find(h) != vertices.end())
+        return vertices.at(h);
+
+    if (h == 1) vertices[h] = 1;
+    else if (h == 2) vertices[h] = 2;
+    else vertices[h] = avlMinVertices(h-1) + avlMinVertices(h-2) + 1;
+
+    return vertices.at(h);
 }
 
-std::map<int, int> fib;
+int avlMaxVertices(int h) {
+    return pow(2, h)-1;
+}
 
-int fibMem(int n) {
-    if (fib.find(n) != fib.end())
-        return fib.at(n);
-
-    if (n <= 2) fib[n] = 1;
-    else fib[n] = fibMem(n-1) + fibMem(n-2);
-
-    return fib.at(n);
+void avlMinMaxVertices(int h) {
+    std::cout << "Min: " << avlMinVertices(h) << std::endl;
+    std::cout << "Max: " << avlMaxVertices(h) << std::endl;
 }
  
 int main(void) {
-    int n;
-    std::cin >> n;
+    int h;
+    std::cout << "Zadejte počet hladin: " << std::endl;
+    std::cin >> h;
 
     if (!std::cin.good()) 
         return EXIT_FAILURE;
 
-    std::cout << n << "-th fibonacci number is: " << fibMem(n) << std::endl;
+    avlMinMaxVertices(h);
     return EXIT_SUCCESS;
 }

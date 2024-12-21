@@ -61,6 +61,11 @@ public:
         return result;
     }
 
+    void print(void) const {
+        for (size_t i = 1; i < _heap.size(); i++)
+            std::cout << _heap[i] << ", ";
+    }
+
 private:
     size_t ROOT = 1;
     size_t NO_SONS = 0;
@@ -126,11 +131,11 @@ std::ostream& operator << (std::ostream &out, const std::vector<int> &P) {
 
 int main(void) {
     Heap h;
-    h.heapBuild({1, 5, 7, 2, 9, 4});
-    std::cout << h.heapSort() << std::endl;
-    h.heapInsert(8);
-    h.heapInsert(6);
-    h.heapInsert(3);
-    std::cout << h.heapSort() << std::endl;
+    h.heapBuild({5,21,5,19,3,5,15,22,21,1,1,28,24,11,30,10,13});
+    h.heapExtractMin();
+    h.heapExtractMin();
+    h.heapExtractMin();
+    h.heapInsert(2);
+    h.print();
     return EXIT_SUCCESS;
 }
