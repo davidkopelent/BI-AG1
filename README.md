@@ -1,6 +1,6 @@
 # Algorithms and Graphs 1
 
-This repository contains my homework assignments and practice exercises for the course **Algorithms and Graphs 1**. The course covers fundamental algorithms, data structures, and graph theory concepts.
+This repository contains my homework assignments and practice exercises for the course **Algorithms and Graphs 1** at [FIT CTU](https://fit.cvut.cz/en). The course covers fundamental algorithms, data structures, and graph theory concepts.
 
 ## 🚀 How to Use This Repository
 - Clone the repository:
